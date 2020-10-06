@@ -23,6 +23,7 @@ import com.example.viewpager.data.network.ApiCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PostFragment extends Fragment {
     ArrayList<PostModel> postModels = new ArrayList<>();
@@ -61,21 +62,18 @@ public class PostFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext()); //udalyaem post
                 builder.setMessage("Delete " + postModels.get(position).getTitle() + "?");
                 builder.setNegativeButton("no", null);
-                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        adepter.delete(position);
-                        App.androidClient.deletePost(id, new ApiCallback() { //on udalyaet post c interneta
-                            @Override
-                            public void onSuccess(List<PostModel> postModels) {
-                            }
+                builder.setPositiveButton("yes", (dialogInterface, i) -> {
+                    adepter.delete(position);
+                    App.androidClient.deletePost(id, new ApiCallback() { //on udalyaet post c interneta
+                        @Override
+                        public void onSuccess(List<PostModel> postModels) {
+                        }
 
-                            @Override
-                            public void onFailure(Exception e) {
+                        @Override
+                        public void onFailure(Exception e) {
 
-                            }
-                        });
-                    }
+                        }
+                    });
                 });
                 builder.show();
 
@@ -93,7 +91,7 @@ public class PostFragment extends Fragment {
 
             @Override
             public void onFailure(Exception e) {
-                Log.d("failure", e.getMessage());
+                Log.d("failure", Objects.requireNonNull(e.getMessage()));
 
             }
 
